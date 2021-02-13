@@ -1,0 +1,8 @@
+{
+	"authors": [
+		"ray"
+	],
+	"description": "A minimal D application.",
+	"license": "proprietary",
+	"name": "doublelinkedlist"
+}

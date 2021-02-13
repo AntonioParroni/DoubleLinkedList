@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/doublelinkedlist
+doublelinkedlist.so
+doublelinkedlist.dylib
+doublelinkedlist.dll
+doublelinkedlist.a
+doublelinkedlist.lib
+doublelinkedlist-test-*
+*.exe
+*.o
+*.obj
+*.lst
