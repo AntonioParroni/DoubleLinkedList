@@ -157,13 +157,12 @@ class DList(T)
 
 			head = null;
 			tail = null;
-
 			return Result(res.value,Yes.DList);
 		}
 		else if (head !is null && head.next.next is null)
 		{
 			Element res = head;
-			Element newHeadTail = new Element (null, null, head.value);
+			Element newHeadTail = new Element (null, null, head.next.value);
 			head = newHeadTail;
 			tail = newHeadTail;
 
@@ -380,8 +379,8 @@ class DList(T)
 		}
 		if (element.next !is null)
 		{
-			element.next.previous = element.previous;
-			tail = element.previous;
+			element.previous.next = element.previous; //////here!!!!!
+			//tail = element.previous;
 			return element.value;
 		}
 		if (element.previous !is null)
@@ -452,8 +451,10 @@ class DList(T)
 		}
 		do
 		{
-			element.value = v;
-			return element;
+			Element newNode = new Element (element.previous, element.next, v);
+			element.next = null;
+			element.previous = null;
+			return newNode;
 		// ... Implementation missing
 		}
 
@@ -545,10 +546,10 @@ class DList(T)
 		if (element.next !is null) // middle case //////////////
 		{
 			element.next.previous = newElem;
+			newElem.next = element.next;
 
-
-			newElem.next = element;
-			element.previous = newElem;
+			newElem.previous = element;
+			element.next = newElem;
 			return newElem;
 		}
 		return newElem;
@@ -1082,10 +1083,26 @@ unittest {
 
 void main ()
 {
-	writefln("Hello");
+	writeln("Hello");
+	/*const strings=["first", "second", "third"];
+	auto list=new DList!string;
+	strings.each!(a => list.unshift(a));
+
+	list.remove(strings[1]);
+	assert(list.length is strings.length -1);
+
+	const results=strings[0..1]~strings[2..$];
+	assert(equal(results, list[].map!(a => a.value)));
+	assert(equal(results.retro, list.reverse.retro.map!(a => a.value)));*/
+
+	writeln("Hello");
+
+}
+
+/*writefln("Hello");
 	auto MyList = new DList!string;
 
-	/*MyList.unshift("Test1");
+	*//*MyList.unshift("Test1");
 	MyList.push("Test2");
 	MyList.push("Test3");
 	MyList.unshift("Test4");
@@ -1098,35 +1115,34 @@ void main ()
 	MyList.shift();
 	MyList.push("Test1");
 	MyList.unshift("Test4");
-*/
+*//*
 	MyList.push("Test1");
 	MyList.push("Test2");
 	MyList.push("Test3");
-	MyList.push("Test4");
 	//MyList.remove("Test4");
 	//MyList.remove("Test1");
-	/*MyList.remove("Test4");
+	*//*MyList.remove("Test4");
 	MyList.remove("Test3");
 	MyList.remove("Test2");
-	MyList.remove("Test1");*/
+	MyList.remove("Test1");*//*
 
-	/*MyList.replace("ABC","Test1");
+	*//*MyList.replace("ABC","Test1");
 	MyList.replace("QWE","Test2");
 	MyList.replace("ASD","Test3");
-	MyList.replace("ZXC","Test4");*/
+	MyList.replace("ZXC","Test4");*//*
 
 	//MyList.insert("111","Test4");
 	//MyList.insert("222","Test1");
-	MyList.insert!(false)("QWE","Test3");
+	MyList.insert!true("New3","Test1");
 
 	//MyList.remove("Test4");
-	/*MyList.remove("Test2");
+	*//*MyList.remove("Test2");
 	MyList.remove("Test3");
-	MyList.remove("Test4");*/
+	MyList.remove("Test4");*//*
 
 	//MyList.remove("Test2");
 
-	/*const strings=["first", "second", "third"];
+	*//*const strings=["first", "second", "third"];
 
 	auto list=new DList!string;
 	strings.each!(a => list.unshift(a));
@@ -1143,5 +1159,15 @@ void main ()
 	list.remove(strings[$-2]);
 	assert(list.length is 0);
 	assert(list[].empty);*/
-	writeln("Hello, World!");
-}
+
+/*writeln("Hello, World!");
+	auto DList = new DList!string;
+	DList.push("One");
+	DList.push("Two");
+
+	writeln(DList.length());
+	writeln(DList.pop());
+	writeln(DList.pop());
+
+
+	writeln(DList.length());*/
