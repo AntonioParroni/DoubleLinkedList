@@ -1143,4 +1143,5 @@ void main ()
 	list.remove(strings[$-2]);
 	assert(list.length is 0);
 	assert(list[].empty);*/
+	writeln("Hello, World!");
 }
