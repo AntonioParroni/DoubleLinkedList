@@ -263,102 +263,9 @@ class DList(T)
 	protected T remove(Element element) nothrow
 	in {
 		assert(element !is null);
-		// assert(head !is null);
 		}
 	do {
-		/*
-		if (head.value == element.value || (head.next.value == element.value && this.length == 2))  // if node is head
-		{
-			if (head.next is null)
-			{
-				T val = head.value;
-				head = null;
-				tail = null;
-				return val;
-			}
-			else if (head.next.next is null)
-			{
-				head = head.next;
-				head.previous = null;
-				tail = head;
-				tail.next = null;
-				tail.previous = null;
-				return head.value;
-			}
-			else
-			T val = head.value;
-			head = head.next;
-			head.previous = null;
-			return val;
-		}
-		if (tail.value == element.value) // if node is tail
-		{
-			if (tail.previous is null)
-			{
-				T val = tail.value;
-				head = null;
-				tail = null;
-				return val;
-			}
-			else if (tail.previous.previous is null)
-			{
-				tail = tail.previous;
-				tail.next = null;
-				head = tail;
-				head.previous = null;
-				head.next = null;
-				return tail.value;
-			}
-			else
-				T val = tail.value;
-			tail = tail.previous;
-			tail.next = null;
-			return val;
-		}
 
-		for (Element iter = head; iter.next !is null; iter = iter.next)
-		{
-			if (iter.value == element.value)
-			{
-				iter.next = iter.next.next;
-				return iter.value;
-			}
-		}
-		return null;*/
-		/*if (head.opEquals(element))
-		{
-			head = element.next;
-			head.previous = null;
-			return head.value;
-		}
-		if (element.next !is null)
-		{
-			element.next.previous = element.previous;
-			return element.value;
-		}
-		if (element.previous !is null)
-		{
-			element.previous.next = element.next;
-			return element.value;
-		}
-		return null;*/
-		/*if (head.opEquals(element))
-		{
-			head = element.next;
-			head.previous = null;
-			return head.value;
-		}
-		if (element.next !is null)
-		{
-			element.next.previous = element.previous;
-			return element.value;
-		}
-		if (element.previous !is null)
-		{
-			element.previous.next = element.next;
-			return element.value;
-		}
-		return null;*/
 		if (element.previous is null && element.next is null) // single case
 		{
 			head = null;
@@ -367,8 +274,13 @@ class DList(T)
 		}
 		if (element.previous is null) // head case
 		{
+			//head = element.next;
+			//head.previous = null;
+			//return head.value;
 			head = element.next;
 			head.previous = null;
+			element.next = null;
+			element.previous = null;
 			return head.value;
 		}
 		if (element.next is null) // tail case
@@ -379,8 +291,8 @@ class DList(T)
 		}
 		if (element.next !is null)
 		{
-			element.previous.next = element.previous; //////here!!!!!
-			//tail = element.previous;
+			element.previous.next = element.next;
+			element.next.previous = element.previous;//////here!!!!!
 			return element.value;
 		}
 		if (element.previous !is null)
@@ -1084,18 +996,50 @@ unittest {
 void main ()
 {
 	writeln("Hello");
-	/*const strings=["first", "second", "third"];
-	auto list=new DList!string;
-	strings.each!(a => list.unshift(a));
+	const strings=["first", "second", "third", "fourth", "fifth"];
+	// remove
+		auto list=new DList!string;
+		strings.each!(a => list.unshift(a));
+		const mid=list.remove(strings[2]);
 
-	list.remove(strings[1]);
-	assert(list.length is strings.length -1);
+			const results=strings[0..2]~strings[3..$];
+			assert(equal(results, list[].map!(a => a.value)));
+			assert(equal(results.retro, list.reverse.retro.map!(a => a.value)));
+			assert(list.length is strings.length-1);
+			assert(mid.flag is Yes.DList);
+			assert(mid.value == strings[2]);
 
-	const results=strings[0..1]~strings[2..$];
-	assert(equal(results, list[].map!(a => a.value)));
-	assert(equal(results.retro, list.reverse.retro.map!(a => a.value)));*/
 
-	writeln("Hello");
+		// Remove first element
+			/*const first=list.remove(strings[0]);
+			const results=strings[1..2]~strings[3..$];
+			assert(equal(results, list[].map!(a => a.value)));
+			assert(equal(results.retro, list.reverse.retro.map!(a => a.value)));
+			assert(list.length is strings.length-2);
+			assert(first.flag is Yes.DList);
+			assert(first.value == strings[0]);*/
+
+
+		{ // Remove last element
+			/*const last=list.remove(strings[$-1]);
+			const results=strings[1..2]~strings[3..$-1];
+			assert(equal(results, list[].map!(a => a.value)));
+			assert(equal(results.retro, list.reverse.retro.map!(a => a.value)));
+			assert(list.length is strings.length-3);
+			assert(last.flag is Yes.DList);
+			assert(last.value == strings[$-1]);*/
+		}
+
+		{ // Remove none
+			/*const not_found=list.remove(strings[2]);
+			const results=strings[1..2]~strings[3..$-1];
+			assert(equal(results, list[].map!(a => a.value)));
+			assert(equal(results.retro, list.reverse.retro.map!(a => a.value)));
+			assert(list.length is strings.length-3);
+			assert(not_found.flag is No.DList);
+			assert(not_found.value == "");*/
+		}
+	writeln("ASDDD");
 
 }
 
