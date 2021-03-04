@@ -281,13 +281,13 @@ class DList(T)
 			head.previous = null;
 			element.next = null;
 			element.previous = null;
-			return head.value;
+			return element.value;
 		}
 		if (element.next is null) // tail case
 		{
 			tail = element.previous;
 			tail.next = null;
-			return tail.value;
+			return element.value;
 		}
 		if (element.next !is null)
 		{
@@ -364,10 +364,31 @@ class DList(T)
 		do
 		{
 			Element newNode = new Element (element.previous, element.next, v);
-			element.next = null;
-			element.previous = null;
+			if (element.previous is null && element.next is null) // single case
+			{
+				head = newNode;
+				tail = newNode;
+				return newNode;
+			}
+			if (element.previous is null) // head case
+			{
+				element.next.previous = newNode;
+				head = newNode;
+				return newNode;
+			}
+			if (element.next is null) // tail case
+			{
+				tail = newNode;
+				element.previous.next = newNode;
+				return newNode;
+			}
+			if (element.next !is null)
+			{
+				element.previous.next = newNode;
+				element.next.previous = newNode;
+				return newNode;
+			}
 			return newNode;
-		// ... Implementation missing
 		}
 
 	/+
@@ -438,11 +459,11 @@ class DList(T)
 		}
 		if (element.previous is null) // head case
 		{
-			newElem.next = head.next.previous;
+			newElem.next = head.next;
 			head.next.previous = newElem;
 
-			newElem.previous = head;
 			head.next = newElem;
+			newElem.previous = head;
 
 			return newElem;
 		}
@@ -557,11 +578,11 @@ class DList(T)
 }
 
 unittest {
-	/*import std.typecons : Flag, No, Yes;
+	import std.typecons : Flag, No, Yes;
 	import std.algorithm.iteration : each, map;
 	import std.algorithm.comparison : equal;
 	import std.range : retro;
-	import std.array : array;*/
+	import std.array : array;
 
 	//    import std.stdio;
 	{ // Empty list
@@ -995,123 +1016,5 @@ unittest {
 
 void main ()
 {
-	writeln("Hello");
-	const strings=["first", "second", "third", "fourth", "fifth"];
-	// remove
-		auto list=new DList!string;
-		strings.each!(a => list.unshift(a));
-		const mid=list.remove(strings[2]);
-
-			const results=strings[0..2]~strings[3..$];
-			assert(equal(results, list[].map!(a => a.value)));
-			assert(equal(results.retro, list.reverse.retro.map!(a => a.value)));
-			assert(list.length is strings.length-1);
-			assert(mid.flag is Yes.DList);
-			assert(mid.value == strings[2]);
-
-
-		// Remove first element
-			/*const first=list.remove(strings[0]);
-			const results=strings[1..2]~strings[3..$];
-			assert(equal(results, list[].map!(a => a.value)));
-			assert(equal(results.retro, list.reverse.retro.map!(a => a.value)));
-			assert(list.length is strings.length-2);
-			assert(first.flag is Yes.DList);
-			assert(first.value == strings[0]);*/
-
-
-		{ // Remove last element
-			/*const last=list.remove(strings[$-1]);
-			const results=strings[1..2]~strings[3..$-1];
-			assert(equal(results, list[].map!(a => a.value)));
-			assert(equal(results.retro, list.reverse.retro.map!(a => a.value)));
-			assert(list.length is strings.length-3);
-			assert(last.flag is Yes.DList);
-			assert(last.value == strings[$-1]);*/
-		}
-
-		{ // Remove none
-			/*const not_found=list.remove(strings[2]);
-			const results=strings[1..2]~strings[3..$-1];
-			assert(equal(results, list[].map!(a => a.value)));
-			assert(equal(results.retro, list.reverse.retro.map!(a => a.value)));
-			assert(list.length is strings.length-3);
-			assert(not_found.flag is No.DList);
-			assert(not_found.value == "");*/
-		}
-	writeln("ASDDD");
 
 }
-
-/*writefln("Hello");
-	auto MyList = new DList!string;
-
-	*//*MyList.unshift("Test1");
-	MyList.push("Test2");
-	MyList.push("Test3");
-	MyList.unshift("Test4");
-	MyList.pop();
-	MyList.pop();
-	MyList.pop();
-	MyList.pop();
-	MyList.push("Test1");
-	MyList.push("Test2");
-	MyList.shift();
-	MyList.push("Test1");
-	MyList.unshift("Test4");
-*//*
-	MyList.push("Test1");
-	MyList.push("Test2");
-	MyList.push("Test3");
-	//MyList.remove("Test4");
-	//MyList.remove("Test1");
-	*//*MyList.remove("Test4");
-	MyList.remove("Test3");
-	MyList.remove("Test2");
-	MyList.remove("Test1");*//*
-
-	*//*MyList.replace("ABC","Test1");
-	MyList.replace("QWE","Test2");
-	MyList.replace("ASD","Test3");
-	MyList.replace("ZXC","Test4");*//*
-
-	//MyList.insert("111","Test4");
-	//MyList.insert("222","Test1");
-	MyList.insert!true("New3","Test1");
-
-	//MyList.remove("Test4");
-	*//*MyList.remove("Test2");
-	MyList.remove("Test3");
-	MyList.remove("Test4");*//*
-
-	//MyList.remove("Test2");
-
-	*//*const strings=["first", "second", "third"];
-
-	auto list=new DList!string;
-	strings.each!(a => list.unshift(a));
-	foreach(e; list[]) {
-		if (e.value is strings[0]) {
-			list.remove(e);
-		}
-	}
-	assert(equal(strings[1..$], list[].map!(a => a.value)));
-	assert(equal(strings[1..$].retro, list.reverse.retro.map!(a => a.value)));
-
-	list.remove(strings[$-1]);
-	assert(list.length is 1);
-	list.remove(strings[$-2]);
-	assert(list.length is 0);
-	assert(list[].empty);*/
-
-/*writeln("Hello, World!");
-	auto DList = new DList!string;
-	DList.push("One");
-	DList.push("Two");
-
-	writeln(DList.length());
-	writeln(DList.pop());
-	writeln(DList.pop());
-
-
-	writeln(DList.length());*/
